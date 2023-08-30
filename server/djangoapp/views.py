@@ -103,8 +103,8 @@ def get_dealer_details(request, dealer_id):
         # Call the get_dealer_reviews_from_cf function to get reviews
         reviews = get_dealer_reviews_from_cf(dealer_id)
         context["reviews"] = reviews
-        # dealer = get_dealer_by_id_from_cf(dealer_id)
-        # context["dealer"] = dealer
+        dealer = get_dealer_by_id_from_cf(dealer_id)
+        context["dealer"] = dealer
 
         # Now you can add any additional logic to fetch dealership details
         # For example, if you have a function to get dealer details, you can call it
