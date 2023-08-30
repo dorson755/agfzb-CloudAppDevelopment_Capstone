@@ -98,13 +98,13 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     if request.method == "GET":
         context = {}
-        id == dealer_id
+        # id == dealer_id
         url = "https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/reviews-package/fucking%20tired%202"
         # Call the get_dealer_reviews_from_cf function to get reviews
         reviews = get_dealer_reviews_from_cf(dealer_id)
         context["reviews"] = reviews
-        dealer = get_dealer_by_id_from_cf(dealer_id)
-        context["dealer"] = dealer
+        # dealer = get_dealer_by_id_from_cf(dealer_id)
+        # context["dealer"] = dealer
 
         # Now you can add any additional logic to fetch dealership details
         # For example, if you have a function to get dealer details, you can call it

@@ -90,7 +90,7 @@ def get_dealer_by_id_from_cf(id):
     json_result = get_request(url, params={'id': id})
     if json_result:
         # Get the row list in JSON as dealers
-        dealers = json_result
+        dealers = json_result["dbs"]
         # For each dealer object
         for dealer in dealers:
             # Get its content in `doc` object
