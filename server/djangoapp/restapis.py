@@ -83,6 +83,47 @@ def get_dealer_reviews_from_cf(dealership):
     
     return dealer_reviews
 
+def get_dealer_by_id_from_cf(dealer_id):
+    results = []
+    # Call get_request with a URL parameter
+    url = "https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/reviews-package/fucking%20tired%202"
+    response = requests.get(url, params={'id': id})
+    if response.status_code == 200:
+        # Get the row list in JSON as dealers
+        dealers = response["dbs"]
+        # For each dealer object
+        for dealer in dealers:
+            # Get its content in `doc` object
+            dealer_doc = dealer["doc"]
+            # Create a CarDealer object with values in `doc` object
+            dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
+                                   id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
+                                   short_name=dealer_doc["short_name"],
+                                   st=dealer_doc["st"], zip=dealer_doc["zip"])
+def get_dealer_by_id_from_cf(id):
+    url = "https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/reviews-package/fucking%20tired%202"  # Replace with your actual cloud function URL
+    response = requests.get(url, params={'id': id})
+    
+    dealer_reviews = []
+    if response.status_code == 200:
+        data = response.json()
+        reviews_data = data.get('reviews', [])
+        for review_data in reviews_data:
+            review = DealerReview(
+                dealership=review_data.get("dealership", ""),
+                name=review_data.get("name", ""),
+                purchase=review_data.get("purchase", ""),
+                review=review_data.get("review", ""),
+                purchase_date=review_data.get("purchase_date", ""),
+                car_make=review_data.get("car_make", ""),
+                car_model=review_data.get("car_model", ""),
+                car_year=review_data.get("car_year", ""),
+                sentiment=review_data.get("sentiment", ""),  # You need to define analyze_review_sentiments function
+                id=review_data.get("id", "")
+            )
+            dealer_reviews.append(review)
+    
+    return dealer_reviews
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
