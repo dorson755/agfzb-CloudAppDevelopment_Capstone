@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
 from .models import CarDealer, CarModel, CarMake, DealerReview
 # from .restapis import related methods
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, get_request
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, get_request, get_dealer_by_id_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -103,7 +103,7 @@ def get_dealer_details(request, dealer_id):
         # Call the get_dealer_reviews_from_cf function to get reviews
         reviews = get_dealer_reviews_from_cf(dealer_id)
         context["reviews"] = reviews
-        #dealer = get_dealers_from_cf(id)
+        #dealer = get_dealers_by_id_from_cf(url, dealer_id)
         #context["dealer"] = dealer
 
         # Now you can add any additional logic to fetch dealership details
