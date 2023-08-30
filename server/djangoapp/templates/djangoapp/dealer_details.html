@@ -55,8 +55,14 @@
         </div>
     </nav>
     <!-- Add reviews as cards -->
+    
     {% if reviews %}
     <div class="container">
+        <h2>Dealer Details</h2>
+        <p>Name: {{ dealer.name }}</p>
+        <p>Address: {{ dealer.address }}</p>
+        <br/>
+        <!-- Add more fields as needed -->
         <h2>Reviews for {{dealer.full_name}}</h2>
         <div class="card-columns">
             {% for review in reviews %}

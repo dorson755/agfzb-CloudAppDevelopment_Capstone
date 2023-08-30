@@ -84,25 +84,28 @@ def get_dealer_reviews_from_cf(dealership):
     return dealer_reviews
 
 def get_dealer_by_id_from_cf(id):
-    results = []
     url = "https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/dealership-package/get_specific_dealer"
     # Call get_request with a URL parameter
     response = requests.get(url, params={'id': id})
     if response.status_code == 200:
         data = response.json()
-        dealers = data.get('dealerships', [])
-        # For each dealer object
-        for dealer in dealers:
-            # Get its content in `doc` object
-            dealer_doc = dealer["doc"]
-            # Create a CarDealer object with values in `doc` object
-            dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
-                                   id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
-                                   short_name=dealer_doc["short_name"],
-                                   st=dealer_doc["st"], zip=dealer_doc["zip"])
-            results.append(dealer_obj)
-  
-    return results
+        dealer_doc = data.get('dealer', {})  # Assuming 'dealer' is the key containing the dealer details
+        if dealer_doc:
+            # Create a CarDealer object with values in `dealer_doc` object
+            dealer_obj = CarDealer(
+                address=dealer_doc["address"],
+                city=dealer_doc["city"],
+                full_name=dealer_doc["full_name"],
+                id=dealer_doc["id"],
+                lat=dealer_doc["lat"],
+                long=dealer_doc["long"],
+                short_name=dealer_doc["short_name"],
+                st=dealer_doc["st"],
+                zip=dealer_doc["zip"]
+            )
+            return dealer_obj
+    return None  # Return None if dealer not found or response code not 200
+    
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
