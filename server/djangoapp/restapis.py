@@ -85,11 +85,12 @@ def get_dealer_reviews_from_cf(dealership):
 
 def get_dealer_by_id_from_cf(id):
     results = []
+    url = "https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/dealership-package/get_specific_dealer"
     # Call get_request with a URL parameter
-    json_result = get_request("https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/dealership-package/get_specific_dealer", params={'id': id})
+    json_result = get_request(url, params={'id': id})
     if json_result:
         # Get the row list in JSON as dealers
-        dealers = json_result["dbs"]
+        dealers = json_result
         # For each dealer object
         for dealer in dealers:
             # Get its content in `doc` object
