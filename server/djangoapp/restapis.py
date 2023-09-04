@@ -84,7 +84,6 @@ def get_dealer_reviews_from_cf(dealership):
     return dealer_reviews
 
 def get_dealer_by_id_from_cf(id):
-    results = []
     url = f"https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/dealership-package/get_specific_dealer?id={id}"
     # Call get_request with a URL parameter
     response = requests.get(url)
@@ -111,9 +110,10 @@ def get_dealer_by_id_from_cf(id):
                 zip=dealer_details.get("zip", "N/A")
             )
             
-            results.append(dealer_obj)
+            return dealer_obj  # Return the CarDealer object directly
   
-    return results
+    return None  # Return None if no valid dealer data is found
+
 
 
 
