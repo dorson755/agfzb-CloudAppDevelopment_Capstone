@@ -87,34 +87,36 @@ def get_dealer_by_id_from_cf(dealer_id):
     results = []
     url = "https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/dealership-package/get_specific_dealer"
     
-    # Modify the URL to include the dealer_id parameter
-    url_params = {'id': dealer_id}
+    # Call get_request with a URL parameter
+    response = requests.get(url, params={'id': dealer_id})
     
-    # Call get_request with the updated URL and parameters
-    response = get_request(url, **url_params)
-    
-    if response:
-        # Check if response is already a dictionary (no need to call .json())
-        if isinstance(response, dict):
-            dealer_details = response  # Use the response directly
-        else:
-            # Deserialize the JSON response if it's a JSON-formatted string
-            dealer_details = response.json()
+    if isinstance(response, dict):
+        # Handle the case when the response is already a dictionary
+        dealer_details = response.get('doc', {})
+    elif response.status_code == 200:
+        # Handle the case when the response is not a dictionary
+        data = response.json()
+        dealers = data.get('dbs', [])  # Assuming 'dbs' contains the list of dealers
         
-        # Create a CarDealer object with values from the dealer_details dictionary
-        dealer_obj = CarDealer(
-            address=dealer_details["address"],
-            city=dealer_details["city"],
-            full_name=dealer_details["full_name"],
-            id=dealer_details["id"],
-            lat=dealer_details["lat"],
-            long=dealer_details["long"],
-            short_name=dealer_details["short_name"],
-            st=dealer_details["st"],
-            zip=dealer_details["zip"]
-        )
-        
-        results.append(dealer_obj)
+        # Iterate through each dealer dictionary
+        for dealer_details in dealers:
+            # Access the 'doc' key within the dealer_details dictionary
+            dealer_details = dealer_details.get('doc', {})
+            
+            # Create a CarDealer object with values from the 'doc' dictionary
+            dealer_obj = CarDealer(
+                address=dealer_details.get("address", "N/A"),
+                city=dealer_details.get("city", "N/A"),
+                full_name=dealer_details.get("full_name", "N/A"),
+                id=dealer_details.get("id", "N/A"),
+                lat=dealer_details.get("lat", "N/A"),
+                long=dealer_details.get("long", "N/A"),
+                short_name=dealer_details.get("short_name", "N/A"),
+                st=dealer_details.get("st", "N/A"),
+                zip=dealer_details.get("zip", "N/A")
+            )
+            
+            results.append(dealer_obj)
   
     return results
 
