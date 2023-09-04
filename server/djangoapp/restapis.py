@@ -83,12 +83,17 @@ def get_dealer_reviews_from_cf(dealership):
     
     return dealer_reviews
 
-def get_dealer_by_id_from_cf(id):
+def get_dealer_by_id_from_cf(dealer_id):
     results = []
     url = "https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/dealership-package/get_specific_dealer"
-    # Call get_request with a URL parameter
-    response = requests.get(url, params={'id': id})
-    if response.status_code == 200:
+    
+    # Modify the URL to include the dealer_id parameter
+    url_params = {'id': dealer_id}
+    
+    # Call get_request with the updated URL and parameters
+    response = get_request(url, **url_params)
+    
+    if response:
         data = response.json()
         dealers = data.get('dbs', [])  # Assuming 'dbs' contains the list of dealers
         
@@ -110,6 +115,7 @@ def get_dealer_by_id_from_cf(id):
             results.append(dealer_obj)
   
     return results
+
 
 
 
