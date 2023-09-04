@@ -73,7 +73,7 @@ def get_dealers_from_cf(url, **kwargs):
 def get_dealer_reviews_from_cf(dealership):
     url = "https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/reviews-package/fucking%20tired%202"  # Replace with your actual cloud function URL
     response = requests.get(url, params={'dealership': dealership})
-    
+    api_key = "vNXgiJpAvTd7uftgBCeQOCsNBcdlEzRU6xlMHKYcqEu0"
     dealer_reviews = []
     if response.status_code == 200:
         data = response.json()
@@ -145,23 +145,31 @@ def get_dealer_by_id_from_cf(id):
 
 
 def analyze_review_sentiments(text, api_key):
-    url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/YOUR_INSTANCE_ID/v1/analyze"
-    # Replace YOUR_INSTANCE_ID with your actual Watson NLU instance ID
-
+    url = "https://api.us-east.natural-language-understanding.watson.cloud.ibm.com/instances/4d7815d9-2ca8-441a-b3f7-a1b6dba63a03/v1/analyze"
+    
     params = {
-        "version": "2021-09-01",
-        "features": "emotion,sentiment",
-        "text": text,
-        "return_analyzed_text": True
+        "version": "2021-08-01",
+        "features": {
+            "sentiment": {}
+        },
+        "text": text
+    }
+    
+    headers = {
+        "Content-Type": "application/json"
     }
 
-    response = get_request(url, api_key=api_key, **params)
+    auth = HTTPBasicAuth('apikey', api_key)
 
-    if response and "sentiment" in response:
-        sentiment = response["sentiment"]
+    response = requests.post(url, json=params, headers=headers, auth=auth)
+
+    if response.status_code == 200:
+        data = response.json()
+        sentiment = data.get("sentiment", {}).get("document", {}).get("label", "N/A")
         return sentiment
-    else:
-        return None
+    
+    return "N/A"
+
 
 
 def add_review(request, dealer_id):
