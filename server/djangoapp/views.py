@@ -107,6 +107,7 @@ def get_dealer_details(request, dealer_id):
         dealer = get_dealer_by_id_from_cf(dealer_id)
         print("Dealer object:", dealer)
         context["dealer"] = dealer
+        
 
         # Now you can add any additional logic to fetch dealership details
         # For example, if you have a function to get dealer details, you can call it

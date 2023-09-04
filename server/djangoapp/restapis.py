@@ -8,20 +8,32 @@ from django.http import JsonResponse
 # Create a `get_request` to make HTTP GET requests
 # e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
 #                                     auth=HTTPBasicAuth('apikey', api_key))
-def get_request(url, **kwargs):
+def get_request(url, api_key=None, **kwargs):
     print(kwargs)
     print("GET from {} ".format(url))
+    
+    headers = {'Content-Type': 'application/json'}
+    
     try:
-        # Call get method of requests library with URL and parameters
-        response = requests.get(url, headers={'Content-Type': 'application/json'},
-                                    params=kwargs)
-    except:
-        # If any error occurs
-        print("Network exception occurred")
+        if api_key:
+            # Use HTTP Basic Authentication with the provided API key
+            response = requests.get(url, headers=headers, params=kwargs, auth=HTTPBasicAuth('apikey', api_key))
+        else:
+            # No authentication, standard GET request
+            response = requests.get(url, headers=headers, params=kwargs)
+    except Exception as e:
+        # Handle exceptions here
+        print("Network exception occurred:", str(e))
+        return None
+    
     status_code = response.status_code
     print("With status {} ".format(status_code))
-    json_data = json.loads(response.text)
-    return json_data
+    
+    try:
+        json_data = json.loads(response.text)
+        return json_data
+    except json.JSONDecodeError:
+        return None
 
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
@@ -79,6 +91,10 @@ def get_dealer_reviews_from_cf(dealership):
                 sentiment=review_data.get("sentiment", ""),  # You need to define analyze_review_sentiments function
                 id=review_data.get("id", "")
             )
+            # Analyze sentiment and assign it to the review object
+            sentiment = analyze_review_sentiments(review.review, api_key)
+            if sentiment:
+                review.sentiment = sentiment
             dealer_reviews.append(review)
     
     return dealer_reviews
@@ -126,6 +142,28 @@ def get_dealer_by_id_from_cf(id):
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
+
+
+def analyze_review_sentiments(text, api_key):
+    url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/YOUR_INSTANCE_ID/v1/analyze"
+    # Replace YOUR_INSTANCE_ID with your actual Watson NLU instance ID
+
+    params = {
+        "version": "2021-09-01",
+        "features": "emotion,sentiment",
+        "text": text,
+        "return_analyzed_text": True
+    }
+
+    response = get_request(url, api_key=api_key, **params)
+
+    if response and "sentiment" in response:
+        sentiment = response["sentiment"]
+        return sentiment
+    else:
+        return None
+
+
 def add_review(request, dealer_id):
     if request.method == "GET":
         url = f"https://service.eu.apiconnect.ibmcloud.com/gws/apigateway/api/a9220b6d6b26f1eb3b657a98770b743616f7d4cd223b89cd1ca4e88ab49bdb92/api/dealership?dealerId={dealer_id}"
