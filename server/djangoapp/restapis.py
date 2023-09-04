@@ -94,28 +94,29 @@ def get_dealer_by_id_from_cf(dealer_id):
     response = get_request(url, **url_params)
     
     if response:
-        data = response.json()
-        dealers = data.get('dbs', [])  # Assuming 'dbs' contains the list of dealers
+        # Check if response is already a dictionary (no need to call .json())
+        if isinstance(response, dict):
+            dealer_details = response  # Use the response directly
+        else:
+            # Deserialize the JSON response if it's a JSON-formatted string
+            dealer_details = response.json()
         
-        # Iterate through each dealer dictionary
-        for dealer_details in dealers:
-            # Create a CarDealer object with values from the dealer_details dictionary
-            dealer_obj = CarDealer(
-                address=dealer_details["address"],
-                city=dealer_details["city"],
-                full_name=dealer_details["full_name"],
-                id=dealer_details["id"],
-                lat=dealer_details["lat"],
-                long=dealer_details["long"],
-                short_name=dealer_details["short_name"],
-                st=dealer_details["st"],
-                zip=dealer_details["zip"]
-            )
-            
-            results.append(dealer_obj)
+        # Create a CarDealer object with values from the dealer_details dictionary
+        dealer_obj = CarDealer(
+            address=dealer_details["address"],
+            city=dealer_details["city"],
+            full_name=dealer_details["full_name"],
+            id=dealer_details["id"],
+            lat=dealer_details["lat"],
+            long=dealer_details["long"],
+            short_name=dealer_details["short_name"],
+            st=dealer_details["st"],
+            zip=dealer_details["zip"]
+        )
+        
+        results.append(dealer_obj)
   
     return results
-
 
 
 
