@@ -83,27 +83,22 @@ def get_dealer_reviews_from_cf(dealership):
     
     return dealer_reviews
 
-def get_dealer_by_id_from_cf(dealer_id):
+def get_dealer_by_id_from_cf(id):
     results = []
-    url = "https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/dealership-package/get_specific_dealer"
-    
+    url = f"https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/dealership-package/get_specific_dealer?id={id}"
     # Call get_request with a URL parameter
-    response = requests.get(url, params={'id': dealer_id})
-    
-    if isinstance(response, dict):
-        # Handle the case when the response is already a dictionary
-        dealer_details = response.get('doc', {})
-    elif response.status_code == 200:
-        # Handle the case when the response is not a dictionary
+    response = requests.get(url)
+    if response.status_code == 200:
         data = response.json()
         dealers = data.get('dbs', [])  # Assuming 'dbs' contains the list of dealers
         
-        # Iterate through each dealer dictionary
-        for dealer_details in dealers:
-            # Access the 'doc' key within the dealer_details dictionary
-            dealer_details = dealer_details.get('doc', {})
+        # Check if there are dealers in the list
+        if dealers:
+            # Take the first dealer (assuming there's only one)
+            dealer_details = dealers[0]
+            print("Dealer details:", dealer_details)  # Add this line for debugging
             
-            # Create a CarDealer object with values from the 'doc' dictionary
+            # Create a CarDealer object with values from the dealer_details dictionary
             dealer_obj = CarDealer(
                 address=dealer_details.get("address", "N/A"),
                 city=dealer_details.get("city", "N/A"),
@@ -119,6 +114,11 @@ def get_dealer_by_id_from_cf(dealer_id):
             results.append(dealer_obj)
   
     return results
+
+
+
+# Example usage:
+# dealer = get_dealer_by_id_from_cf(dealer_id)
 
 
 
