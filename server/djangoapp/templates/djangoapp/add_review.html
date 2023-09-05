@@ -152,7 +152,11 @@
         format: 'mm/dd/yyyy'
     });
 </script>
+
 <script type="text/javascript">
+    // Debugging line to check the value of user authentication
+    console.log("User authenticated: {{ user.is_authenticated|yesno:'true,false' }}");
+
     // Show the login modal when the submit button is clicked by unauthenticated users
     $('#loginBtn').click(function () {
         if (!{{ user.is_authenticated|yesno:"true,false" }}) {

@@ -128,6 +128,7 @@ def add_review(request, dealer_id):
             "cars": CarModel.objects.all(),
             "dealer": dealer,
             "dealer_id": dealer_id,
+            "user": request.user  # Pass the user object
         }
         return render(request, 'djangoapp/add_review.html', context)
     
