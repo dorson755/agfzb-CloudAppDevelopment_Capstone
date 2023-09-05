@@ -87,6 +87,13 @@
         </div>
         {% endfor %}
     </div>
+    <div class="text-center"> <!-- Add this div -->
+    <p class="alert alert-info">
+            Add a review for {{dealer.full_name}}!
+            <br>
+            <a class="btn btn-primary" href="{% url 'djangoapp:add_review' dealer_id=dealer.id %}">Leave a Review</a>
+        </p>
+    </div> <!-- Close the div -->
     {% else %}
     <div class="text-center"> <!-- Add this div -->
         <p class="alert alert-info">
