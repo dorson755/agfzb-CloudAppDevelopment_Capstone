@@ -120,6 +120,15 @@ def get_dealer_details(request, dealer_id):
 # def add_review(request, dealer_id):
 # ...
 
+def post_request(url, data, headers=None):
+    try:
+        response = requests.post(url, json=data, headers=headers)
+        response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"POST request failed: {e}")
+        return None
+
 def add_review(request, dealer_id):
     if request.method == "GET":
         # Use the get_dealer_by_id_from_cf function to fetch dealer details
@@ -147,13 +156,13 @@ def add_review(request, dealer_id):
             if form.get("purchasecheck"):
                 review["purchasedate"] = datetime.strptime(form.get("purchasedate"), "%m/%d/%Y").isoformat()
                 car = CarModel.objects.get(pk=form["car"])
-                review["car_make"] = car.car_make.name
+                review["car_make"] = car.make.name
                 review["car_model"] = car.name
                 review["car_year"] = car.year.strftime("%Y")
             
             json_payload = {"review": review}
             URL = 'https://us-east.functions.appdomain.cloud/api/v1/web/befaae8a-3d64-42a4-9aab-bdbd5aa2dd89/reviews-package/post-review'
-            post_request(URL, json_payload, dealerId=dealer_id)
+            post_request(URL, json_payload)
             
             # Redirect to the dealer details page after review submission
             return redirect("djangoapp:dealer_details", dealer_id=dealer_id)

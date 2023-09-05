@@ -37,7 +37,7 @@
             {% if user.is_authenticated %}
             <li>
                 <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
-                <a class="btn btn-link" href="{% url 'djangoapp:add_review' %}">Add Review</a>
+                <a class="btn btn-link" href="{% url 'djangoapp:add_review' dealer_id=dealer.id %}">Add Review</a>
                 <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
             </li>
             {% else %}
@@ -92,7 +92,7 @@
         <p class="alert alert-info">
             No reviews available for {{dealer.full_name}}. Be the first to leave a review!
             <br>
-            <a class="btn btn-primary" href="#">Leave a Review</a>
+            <a class="btn btn-primary" href="{% url 'djangoapp:add_review' dealer_id=dealer.id %}">Leave a Review</a>
         </p>
     </div> <!-- Close the div -->
     {% endif %}
