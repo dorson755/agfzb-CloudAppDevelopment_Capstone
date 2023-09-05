@@ -146,6 +146,7 @@ def add_review(request, dealer_id):
         if request.user.is_authenticated:
             # Handle the review submission here
             form = request.POST
+            purchasecheck = "true" if "purchasecheck" in form else "false"
             review = {
                 "name": f"{request.user.first_name} {request.user.last_name}",
                 "dealership": dealer_id,
@@ -154,7 +155,7 @@ def add_review(request, dealer_id):
             }
             
             if form.get("purchasecheck"):
-                review["purchase_date"] = datetime.strptime(form.get("purchasedate"), "%m/%d/%Y").isoformat()
+                review["purchase_date"] = datetime.strptime(form.get("purchasedate"), "%m/%d/%Y").strftime("%m/%d/%Y")
                 car = CarModel.objects.get(pk=form["car"])
                 review["car_make"] = car.make.name
                 review["car_model"] = car.name
