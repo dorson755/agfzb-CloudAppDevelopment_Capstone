@@ -79,9 +79,10 @@
                 {% if user.is_authenticated %}
                 <!-- If user is authenticated, show car selection -->
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="purchasecheck" id="purchasecheck">
+                    <input class="form-check-input" type="checkbox" name="purchasecheck" id="purchasecheck" value="true">
                     <label class="form-check-label" for="purchasecheck">I have purchased a car from {{ dealer.full_name }}</label>
                 </div>
+                <input type="hidden" name="purchasecheck" value="false"> <!-- Add a hidden field for "false" -->
                 <div class="form-group">
                     <label for="car">Select your car (model-make-year):</label>
                     <select name="car" id="car" class="form-select" required>
