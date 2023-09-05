@@ -56,6 +56,21 @@
     </div>
 </nav>
 <div class="container">
+    <!-- Dealer Details Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>Dealer Details</h3>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ dealer.full_name }}</h5>
+            <p class="card-text">Address: {{ dealer.address }}</p>
+            <p class="card-text">City: {{ dealer.city }}</p>
+            <p class="card-text">State: {{ dealer.st }}</p>
+            <p class="card-text">ZIP: {{ dealer.zip }}</p>
+        </div>
+    </div>
+
+    <!-- Add review form here -->
     <form action="{% url 'djangoapp:add_review' dealer_id=dealer_id %}" method="post">
         {% csrf_token %}
         <div class="form-group">
