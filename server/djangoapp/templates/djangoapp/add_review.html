@@ -56,7 +56,7 @@
     </div>
 </nav>
 <div class="container">
-    <form action="{% url 'djangoapp:add_review' dealer_id %}" method="post">
+    <form action="{% url 'djangoapp:add_review' dealer_id=dealer_id %}" method="post">
         {% csrf_token %}
         <div class="form-group">
             <label for="content">Enter your review:</label>
@@ -71,7 +71,7 @@
             <select name="car" id="car" class="form-select" required>
                 <option value="" selected disabled>Select a car</option>
                 {% for car in cars %}
-                <option value="{{ car.id }}">{{ car.name }} - {{ car.car_make.name }} - {{ car.year|date:"Y" }}</option>
+                <option value="{{ car.id }}">{{ car.make.name }} - {{ car.name }} - {{ car.year|date:"Y" }}</option>
                 {% endfor %}
             </select>
         </div>
