@@ -8,66 +8,87 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <!--MDB-->
+        <!-- Font Awesome -->
+        <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        rel="stylesheet"
+        />
+        <!-- Google Fonts -->
+        <link
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        rel="stylesheet"
+        />
+        <!-- MDB -->
+        <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.css"
+        rel="stylesheet"
+        />
+        <!-- MDB -->
+        <script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
+        ></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="{% url 'djangoapp:index' %}">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'djangoapp:about' %}">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
-      </ul>
-    </div>
-    <ul class="nav navbar-nav navbar-right">
-        {% if user.is_authenticated %}
-        <li>
-            <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
-            <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
-        </li>
-        {% else %}
-        <li>
-            <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
-                {% csrf_token %}
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Username" name="username" >
-                    <input type="password" class="form-control" placeholder="Password" name="psw" >
-                    <button class="btn btn-primary" type="submit">Login</button>
-                    <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
-                </div>
-            </form>
-        </li>
-        {% endif %}
-    </ul>
-    </div>
-</nav>
-<div class="container">
-    <!-- Dealer Details Section -->
-    <div class="card mb-4 mt-2">
-        <div class="card-header">
-            <h3>Dealer Details</h3>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'djangoapp:index' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'djangoapp:about' %}">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+          </ul>
         </div>
-        <div class="card-body">
-            <h5 class="card-title">{{ dealer.full_name }}</h5>
-            <p class="card-text">Address: {{ dealer.address }}</p>
-            <p class="card-text">City: {{ dealer.city }}</p>
-            <p class="card-text">State: {{ dealer.st }}</p>
-            <p class="card-text">ZIP: {{ dealer.zip }}</p>
+        <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+            <li>
+                <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <li>
+                <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Username" name="username" >
+                        <input type="password" class="form-control" placeholder="Password" name="psw" >
+                        <button class="btn btn-primary" type="submit">Login</button>
+                        <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+                    </div>
+                </form>
+            </li>
+            {% endif %}
+        </ul>
         </div>
-    </div>
+    </nav>
+    <div class="container pt-4 pr-3 pb-5 pl-3">
+        <!-- Dealer Details Section -->
+        <div class="card mb-4 mt-2">
+            <div class="card-header">
+                <h3>Dealer Details</h3>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ dealer.full_name }}</h5>
+                <p class="card-text">Address: {{ dealer.address }}</p>
+                <p class="card-text">City: {{ dealer.city }}</p>
+                <p class="card-text">State: {{ dealer.st }}</p>
+                <p class="card-text">ZIP: {{ dealer.zip }}</p>
+            </div>
+        </div>
 
             <!-- Add review form here -->
             <form action="{% url 'djangoapp:add_review' dealer_id=dealer_id %}" method="post">
@@ -124,10 +145,6 @@
             </div>
             {% endif %}
         </div>
-        <script type="text/javascript">
-            $('.date-own').datepicker({
-                format: 'mm/dd/yyyy'
-            });
-        </script>
-    </body>
-    </html>
+
+</body>
+</html>
